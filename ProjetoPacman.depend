@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1462668152 source:f:\pacman\projetopacman\main.c
+	<allegro.h>
+
+1463439032 source:e:\ufal\p1\projeto-de-p1\main.c
+	<allegro.h>
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+
+1463334947 source:c:\users\tiago\desktop\projeto de p1\projetopacman\main.c
+	<allegro.h>
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+
+1463108216 source:c:\users\leonardo\desktop\projeto p1\projeto-de-p1\main.c
+	<allegro.h>
+	<time.h>
+	<stdio.h>
+
+1534350148 source:c:\tiago\p1\projeto-de-p1-master\main.c
+	<allegro.h>
+	<bits/stdc++.h>
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+
