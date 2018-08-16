@@ -147,44 +147,204 @@ int trilho(int x,int y){
     return 0;
 }
 void setarPixelComidas (Comida * comidas){
-    for(int i = 0; i < 19;i++){
-        comidas[i].x = 15 + 30*i;
-        comidas[i].y = 520;
-        comidas[i].desenhar = 1;
-    }
+    comidas[0].x = 15;
+    comidas[0].y = 520;
+    comidas[0].desenhar=1;
+    comidas[1].x = 45;
+    comidas[1].y = 520;
+    comidas[1].desenhar=1;
+    comidas[2].x = 75;
+    comidas[2].y = 520;
+    comidas[2].desenhar=1;
+    comidas[3].x = 105;
+    comidas[3].y = 520;
+    comidas[3].desenhar=1;
+    comidas[4].x = 135;
+    comidas[4].y = 520;
+    comidas[4].desenhar=1;
+    comidas[5].x = 165;
+    comidas[5].y = 520;
+    comidas[5].desenhar=1;
+    comidas[6].x = 195;
+    comidas[6].y = 520;
+    comidas[6].desenhar=1;
+    comidas[7].x = 225;
+    comidas[7].y = 520;
+    comidas[7].desenhar=1;
+    comidas[8].x = 255;
+    comidas[8].y = 520;
+    comidas[8].desenhar=1;
+    comidas[9].x = 285;
+    comidas[9].y = 520;
+    comidas[9].desenhar=1;
+    comidas[10].x = 315;
+    comidas[10].y = 520;
+    comidas[10].desenhar=1;
+    comidas[11].x = 345;
+    comidas[11].y = 520;
+    comidas[11].desenhar=1;
+    comidas[12].x = 375;
+    comidas[12].y = 520;
+    comidas[12].desenhar=1;
+    comidas[13].x = 405;
+    comidas[13].y = 520;
+    comidas[13].desenhar=1;
+    comidas[14].x = 435;
+    comidas[14].y = 520;
+    comidas[14].desenhar=1;
+    comidas[15].x = 465;
+    comidas[15].y = 520;
+    comidas[15].desenhar=1;
+    comidas[16].x = 495;
+    comidas[16].y = 520;
+    comidas[16].desenhar=1;
+    comidas[17].x = 525;
+    comidas[17].y = 520;
+    comidas[17].desenhar=1;
+    comidas[18].x = 555;
+    comidas[18].y = 520;
+    comidas[18].desenhar=1;
     comidas[19].x = 0;
     comidas[19].y = 0;
     comidas[19].desenhar=0;
-    for(int i = 20; i < 35; i++){
-        comidas[i].x = 450;
-        comidas[i].y = 45 + (i-20)*30;
-        comidas[i].desenhar = 1;
-    }
+    comidas[20].x = 450;
+    comidas[20].y = 45;
+    comidas[20].desenhar=1;
+    comidas[21].x = 450;
+    comidas[21].y = 75;
+    comidas[21].desenhar=1;
+    comidas[22].x = 450;
+    comidas[22].y = 105;
+    comidas[22].desenhar=1;
+    comidas[23].x = 450;
+    comidas[23].y = 135;
+    comidas[23].desenhar=1;
+    comidas[24].x = 450;
+    comidas[24].y = 165;
+    comidas[24].desenhar=1;
+    comidas[25].x = 450;
+    comidas[25].y = 195;
+    comidas[25].desenhar=1;
+    comidas[26].x = 450;
+    comidas[26].y = 225;
+    comidas[26].desenhar=1;
+    comidas[27].x = 450;
+    comidas[27].y = 255;
+    comidas[27].desenhar=1;
+    comidas[28].x = 450;
+    comidas[28].y = 285;
+    comidas[28].desenhar=1;
+    comidas[29].x = 450;
+    comidas[29].y = 315;
+    comidas[29].desenhar=1;
+    comidas[30].x = 450;
+    comidas[30].y = 345;
+    comidas[30].desenhar=1;
+    comidas[31].x = 450;
+    comidas[31].y = 375;
+    comidas[31].desenhar=1;
+    comidas[32].x = 450;
+    comidas[32].y = 405;
+    comidas[32].desenhar=1;
+    comidas[33].x = 450;
+    comidas[33].y = 435;
+    comidas[33].desenhar=1;
+    comidas[34].x = 450;
+    comidas[34].y = 470;
+    comidas[34].desenhar=1;
     comidas[35].x = 0;
     comidas[35].y = 0;
     comidas[35].desenhar=0;
-    for(int i = 36; i < 51; ++i){
-        comidas[i].x = 123;
-        comidas[i].y = 45 + 30*(i-36);
-        comidas[i].desenhar = 1;
-    }
-    for(int i = 51; i < 54; ++i){
-        comidas[i].x = 15 + (i-51)*37;
-        comidas[i].y = 92;
-        comidas[i].desenhar=1;
-    }
+    comidas[36].x = 123;
+    comidas[36].y = 45;
+    comidas[36].desenhar=1;
+    comidas[37].x = 123;
+    comidas[37].y = 75;
+    comidas[37].desenhar=1;
+    comidas[38].x = 123;
+    comidas[38].y = 105;
+    comidas[38].desenhar=1;
+    comidas[39].x = 123;
+    comidas[39].y = 135;
+    comidas[39].desenhar=1;
+    comidas[40].x = 123;
+    comidas[40].y = 165;
+    comidas[40].desenhar=1;
+    comidas[41].x = 123;
+    comidas[41].y = 195;
+    comidas[41].desenhar=1;
+    comidas[42].x = 123;
+    comidas[42].y = 225;
+    comidas[42].desenhar=1;
+    comidas[43].x = 123;
+    comidas[43].y = 255;
+    comidas[43].desenhar=1;
+    comidas[44].x = 123;
+    comidas[44].y = 285;
+    comidas[44].desenhar=1;
+    comidas[45].x = 123;
+    comidas[45].y = 315;
+    comidas[45].desenhar=1;
+    comidas[46].x = 123;
+    comidas[46].y = 345;
+    comidas[46].desenhar=1;
+    comidas[47].x = 123;
+    comidas[47].y = 375;
+    comidas[47].desenhar=1;
+    comidas[48].x = 123;
+    comidas[48].y = 405;
+    comidas[48].desenhar=1;
+    comidas[49].x = 123;
+    comidas[49].y = 437;
+    comidas[49].desenhar=1;
+    comidas[50].x = 123;
+    comidas[50].y = 470;
+    comidas[50].desenhar=1;
+    comidas[51].x = 15;
+    comidas[51].y = 92;
+    comidas[51].desenhar=1;
+    comidas[52].x = 52;
+    comidas[52].y = 92;
+    comidas[52].desenhar=1;
+    comidas[53].x = 90;
+    comidas[53].y = 92;
+    comidas[53].desenhar=1;
     comidas[54].x = 0;
     comidas[54].y = 0;
     comidas[54].desenhar=0;
     comidas[55].x = 0;
     comidas[55].y = 0;
     comidas[55].desenhar=0;
-    for(int i = 56; i < 66; ++i){
-        if(i == 65) continue;
-        comidas[i].x = 158 + 32*(i-56);
-        comidas[i].y = 92;
-        comidas[i].desenhar=1;
-    }
+    comidas[56].x = 158;
+    comidas[56].y = 92;
+    comidas[56].desenhar=1;
+    comidas[57].x = 190;
+    comidas[57].y = 92;
+    comidas[57].desenhar=1;
+    comidas[58].x = 222;
+    comidas[58].y = 92;
+    comidas[58].desenhar=1;
+    comidas[59].x = 255;
+    comidas[59].y = 92;
+    comidas[59].desenhar=1;
+    comidas[60].x = 285;
+    comidas[60].y = 92;
+    comidas[60].desenhar=1;
+    comidas[61].x = 315;
+    comidas[61].y = 92;
+    comidas[61].desenhar=1;
+    comidas[62].x = 345;
+    comidas[62].y = 92;
+    comidas[62].desenhar=1;
+    comidas[63].x = 375;
+    comidas[63].y = 92;
+    comidas[63].desenhar=1;
+    comidas[64].x = 403;
+    comidas[64].y = 92;
+    comidas[64].desenhar=1;
+    comidas[65].x = 428;
+    comidas[65].y = 92;
+    comidas[65].desenhar=1;
     comidas[66].x = 0;
     comidas[66].y = 0;
     comidas[66].desenhar=0;
@@ -569,7 +729,6 @@ void setarPixelComidas (Comida * comidas){
     comidas[193].x = 393;
     comidas[193].y = 122;
     comidas[193].desenhar=1;
-
 }
 int trilho1(int x, int y){
     printf ("X:%d Y:%d\n",x,y);
@@ -644,7 +803,7 @@ double fitness(Fantasma fantasma){
 
 Fantasma new_pop(Fantasma fantasma){
     srand(rand()+fantasma.xp * fantasma.direcao - fantasma.x + fantasma.y/max((int)cromossomos.size(), 1));
-    cout << fitness(fantasma) << endl;
+    //cout << fitness(fantasma) << endl;
     if(rand()%10 or fitness(fantasma) >= 260){
         fantasma.direcao = cromossomos.front().direcao;
         fantasma.sprite_atual = cromossomos.front().sprite_atual;
@@ -652,7 +811,7 @@ Fantasma new_pop(Fantasma fantasma){
         return fantasma;
     }
     else{
-        cout << "q merda: " << fitness(fantasma) << endl;
+        //cout << "q merda: " << fitness(fantasma) << endl;
         return cromossomos.back();
     }
 }
@@ -1068,39 +1227,6 @@ int main ()
                             fantasmas[j].yp = pos_y;
                             int direcao_anterior = fantasmas[j].direcao;
                             //movimenta o fantasma
-                            /*
-                            if(fantasmas[j].direcao==DIREITA){
-                                if(trilho(fantasmas[j].x+1,fantasmas[j].y))
-                                    fantasmas[j].x++;
-                                else
-                                    v++;
-                            }
-                            else if(fantasmas[j].direcao==ESQUERDA ){
-                                if(trilho(fantasmas[j].x-1,fantasmas[j].y))
-                                    fantasmas[j].x--;
-                                else
-                                    v++;
-                            }
-                            else if(fantasmas[j].direcao==CIMA){
-                                if(trilho(fantasmas[j].x,fantasmas[j].y-1))
-                                    fantasmas[j].y--;
-
-                            }
-                            else if (fantasmas[j].direcao==BAIXO){
-                                if(trilho(fantasmas[j].x,fantasmas[j].y+1))
-                                    fantasmas[j].y++;
-                            }
-                            if(v==1){
-                                if(fantasmas[j].direcao==DIREITA){
-                                    fantasmas[j].direcao=ESQUERDA;
-                                    fantasmas[j].sprite_atual = fantasmas[j].sprites[ESQUERDA];
-                                }
-                                else{
-                                    fantasmas[j].direcao=DIREITA;
-                                    fantasmas[j].sprite_atual = fantasmas[j].sprites[DIREITA];
-                                }
-
-                            }*/
                             //cout << "ANTES" << fantasmas[j].x << " " << fantasmas[j].y << endl;
                             fantasmas[j] = genetic_algorithm(fantasmas[j]);
                             //cout << "DEPOIS" << fantasmas[j].x << " " << fantasmas[j].y << endl;
