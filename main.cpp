@@ -24,6 +24,7 @@ typedef struct ghost{
     int yp;
 
     int direcao;
+    int direcao_anterior;
     int fraco;
     BITMAP *sprite_atual;
     BITMAP *sprites[4];
@@ -146,7 +147,13 @@ int trilho(int x,int y){
     return 0;
 }
 void setarPixelComidas (Comida * comidas){
-    comidas[0].x = 15;
+    for(int i = 0; i < 19;i++){
+        comidas[i].x = 15 + 30*i;
+        comidas[i].y = 520;
+        comidas[i].desenhar = 1;
+    }
+    //daqui
+    /*comidas[0].x = 15;
     comidas[0].y = 520;
     comidas[0].desenhar=1;
     comidas[1].x = 45;
@@ -202,11 +209,18 @@ void setarPixelComidas (Comida * comidas){
     comidas[17].desenhar=1;
     comidas[18].x = 555;
     comidas[18].y = 520;
-    comidas[18].desenhar=1;
+    comidas[18].desenhar=1;*/
+    //até aqui
     comidas[19].x = 0;
     comidas[19].y = 0;
     comidas[19].desenhar=0;
-    comidas[20].x = 450;
+    for(int i = 20; i < 35; i++){
+        comidas[i].x = 450;
+        comidas[i].y = 45 + (i-20)*30;
+        comidas[i].desenhar = 1;
+    }
+    //daqui
+    /*comidas[20].x = 450;
     comidas[20].y = 45;
     comidas[20].desenhar=1;
     comidas[21].x = 450;
@@ -249,11 +263,13 @@ void setarPixelComidas (Comida * comidas){
     comidas[33].y = 435;
     comidas[33].desenhar=1;
     comidas[34].x = 450;
-    comidas[34].y = 470;
-    comidas[34].desenhar=1;
+    comidas[34].y = 465;
+    comidas[34].desenhar=1;*/
+    //até aqui
     comidas[35].x = 0;
     comidas[35].y = 0;
     comidas[35].desenhar=0;
+    //daqui
     comidas[36].x = 123;
     comidas[36].y = 45;
     comidas[36].desenhar=1;
@@ -749,6 +765,43 @@ void verificarMorreu(Fantasma * fantasma,int x,int y, int *perdeu){
         *perdeu=1;
 }
 
+Fantasma moveFantasma(Fantasma fantasma){
+    int v = 0;
+    if(fantasma.direcao==DIREITA){
+        if(trilho(fantasma.x+1,fantasma.y))
+            fantasma.x++;
+        else
+            v++;
+    }
+    else if(fantasma.direcao==ESQUERDA ){
+        if(trilho(fantasma.x-1,fantasma.y))
+            fantasma.x--;
+        else
+            v++;
+    }
+    else if(fantasma.direcao==CIMA){
+        if(trilho(fantasma.x,fantasma.y-1))
+            fantasma.y--;
+
+    }
+    else if (fantasma.direcao==BAIXO){
+        if(trilho(fantasma.x,fantasma.y+1))
+            fantasma.y++;
+    }
+    if(v==1){
+        if(fantasma.direcao==DIREITA){
+            fantasma.direcao=ESQUERDA;
+            fantasma.sprite_atual = fantasma.sprites[ESQUERDA];
+        }
+        else{
+            fantasma.direcao=DIREITA;
+            fantasma.sprite_atual = fantasma.sprites[DIREITA];
+        }
+    }
+    return fantasma;
+
+}
+
 int trilho(Fantasma fantasma){
     return trilho(fantasma.x, fantasma.y);
 }
@@ -764,42 +817,68 @@ double fitness(Fantasma fantasma){
     return sqrt((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1));
 }
 
-void new_pop(Fantasma *fantasma){
-    if(rand()%2){
-        fantasma = &cromossomos.front();
+Fantasma new_pop(Fantasma fantasma){
+    srand(rand()+fantasma.xp * fantasma.direcao - fantasma.x + fantasma.y/max((int)cromossomos.size(), 1));
+    if(rand()%10){
+        fantasma.direcao = cromossomos.front().direcao;
+        fantasma.sprite_atual = cromossomos.front().sprite_atual;
+        //cout << cromossomos.front().x << " " << cromossomos.front().y << endl;
+        return fantasma;
     }
     else{
-        fantasma = &cromossomos.back();
+        return cromossomos.back();
     }
 }
 
 bool comp_fitness(Fantasma fantasma1, Fantasma fantasma2){
-    return fitness(fantasma1) > fitness(fantasma2);
+    return fitness(fantasma1) < fitness(fantasma2);
+}
+
+bool backwards(int direcao1, int direcao2){
+    if(direcao1 == CIMA) return direcao2 == BAIXO;
+    if(direcao1 == BAIXO) return direcao2 == CIMA;
+    if(direcao1 == ESQUERDA) return direcao2 == DIREITA;
+    if(direcao1 == DIREITA) return direcao2 == ESQUERDA;
+
 }
 
 void mutate(Fantasma fantasma){
-    srand(fantasma.xp * fantasma.direcao - fantasma.x + fantasma.y);
     Fantasma aux[4] = {fantasma,fantasma,fantasma,fantasma};
-    aux[0].x += 1;
+    aux[0].x++;
+    aux[0].direcao_anterior = fantasma.direcao;
     aux[0].direcao = DIREITA;
-    aux[1].x -= 1;
+    aux[0].sprite_atual = fantasma.sprites[DIREITA];
+
+    aux[1].x--;
+    aux[1].direcao_anterior = fantasma.direcao;
     aux[1].direcao = ESQUERDA;
-    aux[2].y += 1;
+    aux[1].sprite_atual = fantasma.sprites[ESQUERDA];
+
+    aux[2].y++;
+    aux[2].direcao_anterior = fantasma.direcao;
     aux[2].direcao = BAIXO;
-    aux[3].y -= 1;
+    aux[2].sprite_atual = fantasma.sprites[BAIXO];
+
+    aux[3].y--;
+    aux[3].direcao_anterior = fantasma.direcao;
     aux[3].direcao = CIMA;
+    aux[3].sprite_atual = fantasma.sprites[CIMA];
 
     for(int i = 0; i < 4; ++i){
-        if(trilho(aux[i])){
+        if(trilho(aux[i]) && !backwards(aux[i].direcao, aux[i].direcao_anterior)){
             cromossomos.push_back(aux[i]);
         }
     }
+    //cout << cromossomos.size() << endl;
     sort(cromossomos.begin(), cromossomos.end(), comp_fitness);
 }
 
-void genetic_algorithm(Fantasma *fantasma){
-    mutate(*fantasma);
-    new_pop(fantasma);
+Fantasma genetic_algorithm(Fantasma fantasma){
+    cromossomos.clear();
+    mutate(fantasma);
+    if(cromossomos.size() > 1)
+        return moveFantasma(new_pop(fantasma));
+    else return moveFantasma(fantasma);
 }
 
 void setarFantasmas(Fantasma * fantasmas, int quantidade){
@@ -939,9 +1018,6 @@ void movimentarFantasmaQ3(Fantasma * fantasma){
                 fantasma->sprite_atual = fantasma->sprites[DIREITA];
             }
         }
-
-
-
 
 }
 void movimentarFantasmaQ4(Fantasma * fantasma){
@@ -1159,12 +1235,13 @@ int main ()
                         //printf ("X:%d Y:%d\n",pos_x,pos_y);
                         tempo_fantasma +=VELOCIDADE_FANTASMA;
                         for (j=0;j<quantidade_fantasmas;j++){ // movimenta os fantasmas
-                            int v=0;
+                            //int v=0;
                             //atualiza posição do pacman nos fantasmas
                             fantasmas[j].xp = pos_x;
                             fantasmas[j].yp = pos_y;
-
+                            int direcao_anterior = fantasmas[j].direcao;
                             //movimenta o fantasma
+                            /*
                             if(fantasmas[j].direcao==DIREITA){
                                 if(trilho(fantasmas[j].x+1,fantasmas[j].y))
                                     fantasmas[j].x++;
@@ -1196,6 +1273,12 @@ int main ()
                                     fantasmas[j].sprite_atual = fantasmas[j].sprites[DIREITA];
                                 }
 
+                            }*/
+                            //cout << "ANTES" << fantasmas[j].x << " " << fantasmas[j].y << endl;
+                            fantasmas[j] = genetic_algorithm(fantasmas[j]);
+                            //cout << "DEPOIS" << fantasmas[j].x << " " << fantasmas[j].y << endl;
+                            if(fantasmas[j].direcao != direcao_anterior){
+                                fantasmas[j].direcao_anterior = direcao_anterior;
                             }
                             int k;
                             if(quadrante==1){
@@ -1211,6 +1294,7 @@ int main ()
                                 for(k=0;k<quantidade_fantasmas;k++)
                                     movimentarFantasmaQ4(&fantasmas[j]);
                             }
+
 
                         }
 
