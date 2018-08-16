@@ -37,7 +37,6 @@ typedef struct comida{
 }Comida;
 
 vector<Fantasma> cromossomos;
-vector<Fantasma> fantasma_AG;
 
 volatile int exit_programa = FALSE; //Tambem pode ser while(!exit_program) ali no while, ao invés de !key[KEY_ESC]
 void fecha_programa() {exit_programa=TRUE;}
@@ -748,7 +747,6 @@ void verificarMorreu(Fantasma * fantasma,int x,int y, int *perdeu){
     if((fantasma->x >= x-15 && fantasma->x <= x+15) && (fantasma->y >= y-15 && fantasma->y <= y+15))
         *perdeu=1;
 }
-
 Fantasma moveFantasma(Fantasma fantasma){
     int v = 0;
     if(fantasma.direcao==DIREITA){
@@ -785,7 +783,6 @@ Fantasma moveFantasma(Fantasma fantasma){
     return fantasma;
 
 }
-
 int trilho(Fantasma fantasma){
     return trilho(fantasma.x, fantasma.y);
 }
