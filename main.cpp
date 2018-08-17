@@ -30,7 +30,7 @@ typedef struct ghost{
     BITMAP *sprites[4];
 
     friend bool operator==(const struct ghost& l, const struct ghost& r){
-        return (l.x == r.x) && (l.y == l.y);
+        return (l.x == r.x) && (l.y == r.y);
     }
 } Fantasma;
 
