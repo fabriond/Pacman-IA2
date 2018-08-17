@@ -835,7 +835,7 @@ bool backwards(int direcao1, int direcao2){
     else return false;
 }
 //mutação
-void mutate(Fantasma fantasma){
+void generate_mutation(Fantasma fantasma){
     Fantasma aux[4] = {fantasma,fantasma,fantasma,fantasma};
     aux[0].x++;
     aux[0].direcao_anterior = fantasma.direcao;
@@ -864,14 +864,19 @@ void mutate(Fantasma fantasma){
     }
     //cout << cromossomos.size() << endl;
 }
-//roda o algoritmo genético, caso aplicável
-Fantasma genetic_algorithm(Fantasma fantasma){
-    cromossomos.clear();
-    mutate(fantasma);
+
+Fantasma select(Fantasma fantasma){
     Fantasma default_move = moveFantasma(fantasma);
     if(cromossomos.size() > 1 || default_move == fantasma)
         return moveFantasma(new_pop(fantasma));
     else return default_move;
+}
+
+//roda o algoritmo genético, caso aplicável
+Fantasma genetic_algorithm(Fantasma fantasma){
+    cromossomos.clear();
+    generate_mutation(fantasma);
+    return select(fantasma);
 }
 
 void setarFantasmas(Fantasma * fantasmas, int quantidade){
