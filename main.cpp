@@ -28,6 +28,10 @@ typedef struct ghost{
     int fraco;
     BITMAP *sprite_atual;
     BITMAP *sprites[4];
+
+    friend bool operator==(const struct ghost& l, const struct ghost& r){
+        return tie(l.x, l.y) == tie(r.x, r.y);
+    }
 } Fantasma;
 
 typedef struct comida{
@@ -786,7 +790,7 @@ Fantasma moveFantasma(Fantasma fantasma){
 int trilho(Fantasma fantasma){
     return trilho(fantasma.x, fantasma.y);
 }
-
+//função de aptidão
 double fitness(Fantasma fantasma){
     double x1 = fantasma.x;
     double y1 = fantasma.y;
@@ -798,9 +802,19 @@ double fitness(Fantasma fantasma){
     return sqrt((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1));
 }
 
+bool comp_fitness(Fantasma fantasma1, Fantasma fantasma2){
+    return fitness(fantasma1) < fitness(fantasma2);
+}
+
+//geração da nova população
 Fantasma new_pop(Fantasma fantasma){
     srand(rand()+fantasma.xp * fantasma.direcao - fantasma.x + fantasma.y/max((int)cromossomos.size(), 1));
     //cout << fitness(fantasma) << endl;
+    //ordena os cromossomos pela aptidão
+    sort(cromossomos.begin(), cromossomos.end(), comp_fitness);
+
+    //90% de chance de escolher o melhor caso, se a distância do fantasma ao pacman for menor que 260
+    //caso esteja a uma distancia de 260 ou mais do pacman, escolhe o melhor caso sempre
     if(rand()%10 or fitness(fantasma) >= 260){
         fantasma.direcao = cromossomos.front().direcao;
         fantasma.sprite_atual = cromossomos.front().sprite_atual;
@@ -813,10 +827,6 @@ Fantasma new_pop(Fantasma fantasma){
     }
 }
 
-bool comp_fitness(Fantasma fantasma1, Fantasma fantasma2){
-    return fitness(fantasma1) < fitness(fantasma2);
-}
-
 bool backwards(int direcao1, int direcao2){
     if(direcao1 == CIMA) return direcao2 == BAIXO;
     if(direcao1 == BAIXO) return direcao2 == CIMA;
@@ -824,7 +834,7 @@ bool backwards(int direcao1, int direcao2){
     if(direcao1 == DIREITA) return direcao2 == ESQUERDA;
     else return false;
 }
-
+//mutação
 void mutate(Fantasma fantasma){
     Fantasma aux[4] = {fantasma,fantasma,fantasma,fantasma};
     aux[0].x++;
@@ -853,15 +863,15 @@ void mutate(Fantasma fantasma){
         }
     }
     //cout << cromossomos.size() << endl;
-    sort(cromossomos.begin(), cromossomos.end(), comp_fitness);
 }
-
+//roda o algoritmo genético, caso aplicável
 Fantasma genetic_algorithm(Fantasma fantasma){
     cromossomos.clear();
     mutate(fantasma);
-    if(cromossomos.size() > 1)
+    Fantasma default_move = moveFantasma(fantasma);
+    if(cromossomos.size() > 1 || default_move == fantasma)
         return moveFantasma(new_pop(fantasma));
-    else return moveFantasma(fantasma);
+    else return default_move;
 }
 
 void setarFantasmas(Fantasma * fantasmas, int quantidade){
@@ -907,137 +917,6 @@ void setarFantasmas(Fantasma * fantasmas, int quantidade){
         fantasmas[i].xp = 555;
         fantasmas[i].yp = 515;
     }
-}
-void movimentarFantasmaQ1(Fantasma * fantasma){
-        int chance=-1;
-        if(trilho(fantasma->x-1,fantasma->y) && fantasma->direcao!=DIREITA && fantasma->direcao!=ESQUERDA){
-            chance = rand()%4;
-            if(chance==1){
-                fantasma->direcao = ESQUERDA;
-                fantasma->sprite_atual = fantasma->sprites[ESQUERDA];
-            }
-        }
-        else if(trilho(fantasma->x,fantasma->y-1) && fantasma->direcao!=CIMA && fantasma->direcao!=BAIXO){
-            chance = rand()%4;
-            if(chance==1){
-                fantasma->direcao = CIMA;
-                fantasma->sprite_atual = fantasma->sprites[CIMA];
-            }
-        }
-        else if(trilho(fantasma->x+1,fantasma->y) && fantasma->direcao!=DIREITA && fantasma->direcao!=ESQUERDA){
-            chance = rand()%2;
-            if(chance==1){
-                fantasma->direcao = DIREITA;
-                fantasma->sprite_atual = fantasma->sprites[DIREITA];
-            }
-        }
-        else if(trilho(fantasma->x,fantasma->y+1) && fantasma->direcao!=CIMA && fantasma->direcao!=BAIXO){
-            chance = rand()%2;
-            if(chance==1){
-                fantasma->direcao = BAIXO;
-                fantasma->sprite_atual = fantasma->sprites[BAIXO];
-            }
-        }
-}
-void movimentarFantasmaQ2(Fantasma * fantasma){
-int chance=-1;
-        if(trilho(fantasma->x+1,fantasma->y) && fantasma->direcao!=DIREITA && fantasma->direcao!=ESQUERDA){
-            chance = rand()%4;
-            if(chance==1){
-                fantasma->direcao = DIREITA;
-                fantasma->sprite_atual = fantasma->sprites[DIREITA];
-            }
-        }
-        else if(trilho(fantasma->x,fantasma->y-1) && fantasma->direcao!=CIMA && fantasma->direcao!=BAIXO){
-            chance = rand()%4;
-            if(chance==1){
-                fantasma->direcao = CIMA;
-                fantasma->sprite_atual = fantasma->sprites[CIMA];
-            }
-        }
-        else if(trilho(fantasma->x-1,fantasma->y) && fantasma->direcao!=DIREITA && fantasma->direcao!=ESQUERDA){
-            chance = rand()%2;
-            if(chance==1){
-                fantasma->direcao = ESQUERDA;
-                fantasma->sprite_atual = fantasma->sprites[ESQUERDA];
-            }
-        }
-        else if(trilho(fantasma->x,fantasma->y+1) && fantasma->direcao!=CIMA && fantasma->direcao!=BAIXO){
-            chance = rand()%2;
-            if(chance==1){
-                fantasma->direcao = BAIXO;
-                fantasma->sprite_atual = fantasma->sprites[BAIXO];
-            }
-        }
-
-}
-void movimentarFantasmaQ3(Fantasma * fantasma){
-    int chance=-1;
-        if(trilho(fantasma->x,fantasma->y+1) && fantasma->direcao!=CIMA && fantasma->direcao!=BAIXO){
-            chance = rand()%4;
-            if(chance==1){
-                fantasma->direcao = BAIXO;
-                fantasma->sprite_atual = fantasma->sprites[BAIXO];
-            }
-        }
-        else if(trilho(fantasma->x-1,fantasma->y) && fantasma->direcao!=DIREITA && fantasma->direcao!=ESQUERDA){
-            chance = rand()%4;
-            if(chance==1){
-                fantasma->direcao = ESQUERDA;
-                fantasma->sprite_atual = fantasma->sprites[ESQUERDA];
-            }
-        }
-        else if(trilho(fantasma->x,fantasma->y-1) && fantasma->direcao!=CIMA && fantasma->direcao!=BAIXO){
-            chance = rand()%2;
-            if(chance==1){
-                fantasma->direcao = CIMA;
-                fantasma->sprite_atual = fantasma->sprites[CIMA];
-            }
-        }
-        else if(trilho(fantasma->x+1,fantasma->y) && fantasma->direcao!=DIREITA && fantasma->direcao!=ESQUERDA){
-            chance = rand()%2;
-            if(chance==1){
-                fantasma->direcao = DIREITA;
-                fantasma->sprite_atual = fantasma->sprites[DIREITA];
-            }
-        }
-
-}
-void movimentarFantasmaQ4(Fantasma * fantasma){
-        int chance=-1;
-
-         if(trilho(fantasma->x,fantasma->y+1) && fantasma->direcao!=CIMA && fantasma->direcao!=BAIXO){
-            chance = rand()%4;
-            if(chance==1){
-                fantasma->direcao = BAIXO;
-                fantasma->sprite_atual = fantasma->sprites[BAIXO];
-            }
-        }
-
-        else if(trilho(fantasma->x+1,fantasma->y) && fantasma->direcao!=DIREITA && fantasma->direcao!=ESQUERDA){
-            chance = rand()%4;
-            if(chance==1){
-                fantasma->direcao = DIREITA;
-                fantasma->sprite_atual = fantasma->sprites[DIREITA];
-            }
-        }
-        else if(trilho(fantasma->x,fantasma->y-1) && fantasma->direcao!=CIMA && fantasma->direcao!=BAIXO){
-            chance = rand()%2;
-            if(chance==1){
-                fantasma->direcao = CIMA;
-                fantasma->sprite_atual = fantasma->sprites[CIMA];
-            }
-        }
-        else if(trilho(fantasma->x-1,fantasma->y) && fantasma->direcao!=DIREITA && fantasma->direcao!=ESQUERDA){
-            chance = rand()%2;
-            if(chance==1){
-                fantasma->direcao = ESQUERDA;
-                fantasma->sprite_atual = fantasma->sprites[ESQUERDA];
-            }
-        }
-
-
-
 }
 void setarDificuldade(int dificuldade,int * velocidade,int * velocidade_fantasma,int * att_quadrante,int * numero_fantasmas){
     if(dificuldade==1){
@@ -1105,7 +984,7 @@ int main ()
 
     Fantasma fantasmas[16];
 
-    int quadrante=4;    //1 2
+    //int quadrante=4;  //1 2
                         //3 4
 
     int quantidade_fantasmas=4;
@@ -1127,7 +1006,6 @@ int main ()
     int tempo;
     int tempo_andar = 0;
     int tempo_fantasma = 0;
-    int tempo_quadrante =0;
     int tempo_sprite = 0;
     int pos_x=555,pos_y=515;
     int direcao_atual=DIREITA; //
@@ -1144,6 +1022,7 @@ int main ()
             setarDificuldade(dificuldade,&VELOCIDADE,&VELOCIDADE_FANTASMA,&ATT_QUADRANTE,&quantidade_fantasmas);
             setarFantasmas(fantasmas,quantidade_fantasmas);
             setarPixelComidas(comidas);
+            direcao_atual=DIREITA;
             int PERDEU=0;
             int score_atual=0;
             while (!exit_programa && !PERDEU) //Condição para fechar o programa, array Key[estado da tecla]
@@ -1178,6 +1057,7 @@ int main ()
                     }
 
                     //printf ("tempo:%d andar:%d\n",tempo, tempo_andar);
+                    //movimento do pacman
                     if(tempo >= tempo_andar){
                         //printf ("X:%d Y:%d\n",pos_x,pos_y);
                         tempo_andar +=VELOCIDADE;
@@ -1199,21 +1079,6 @@ int main ()
                         }
                     }
 
-                    if(tempo >= tempo_quadrante){
-                        //printf ("Quadrante:%d\n",quadrante);
-                        tempo_quadrante +=ATT_QUADRANTE;
-
-                        if (pos_x <= MAX_X/2 && pos_y<=MAX_Y/2)
-                            quadrante=1;
-                        else if (pos_x >= MAX_X/2 && pos_y<=MAX_Y/2)
-                            quadrante=2;
-                        else if (pos_x <= MAX_X/2 && pos_y>=MAX_Y/2)
-                            quadrante=3;
-                        else if (pos_x >= MAX_X/2 && pos_y>=MAX_Y/2)
-                            quadrante=4;
-
-                    }
-
                     if(tempo >= tempo_fantasma){
                         //printf ("X:%d Y:%d\n",pos_x,pos_y);
                         tempo_fantasma +=VELOCIDADE_FANTASMA;
@@ -1222,34 +1087,14 @@ int main ()
                             //atualiza posição do pacman nos fantasmas
                             fantasmas[j].xp = pos_x;
                             fantasmas[j].yp = pos_y;
-                            int direcao_anterior = fantasmas[j].direcao;
                             //movimenta o fantasma
                             //cout << "ANTES" << fantasmas[j].x << " " << fantasmas[j].y << endl;
                             fantasmas[j] = genetic_algorithm(fantasmas[j]);
                             //cout << "DEPOIS" << fantasmas[j].x << " " << fantasmas[j].y << endl;
-                            int k;
-                            if(quadrante==1){
-                                for(k=0;k<quantidade_fantasmas;k++)
-                                    movimentarFantasmaQ1(&fantasmas[j]);
-                            }else if(quadrante==2){
-                                for(k=0;k<quantidade_fantasmas;k++)
-                                    movimentarFantasmaQ2(&fantasmas[j]);
-                            }else if(quadrante==3){
-                                for(k=0;k<quantidade_fantasmas;k++)
-                                    movimentarFantasmaQ3(&fantasmas[j]);
-                            }else if(quadrante==4){
-                                for(k=0;k<quantidade_fantasmas;k++)
-                                    movimentarFantasmaQ4(&fantasmas[j]);
-                            }
-                            if(fantasmas[j].direcao != direcao_anterior){
-                                fantasmas[j].direcao_anterior = direcao_anterior;
-                            }
-
 
                         }
 
                     }
-
 
                     if(tempo >= tempo_sprite){
                         i++;
@@ -1358,7 +1203,6 @@ int main ()
             }
             tempo_andar = clock();
             tempo_fantasma = clock();
-            tempo_quadrante = clock();
             tempo_sprite = clock();
 
             draw_sprite(buffer,menu1,0,0);
