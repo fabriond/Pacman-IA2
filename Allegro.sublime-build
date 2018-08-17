@@ -1,0 +1,11 @@
+//Sublime-build to compile file with Allegro 4.4.2
+
+//To use this sublime build all you need is to extract the 
+//bin, lib and include folders of allegro-4.4.2(the MingW version download) into the MingW folder
+
+//place this sublime-build at C:\Users\(your user)\AppData\Roaming\Sublime Text 3\Packages\User
+{
+  "cmd": ["g++", "$file", "‐IC:\\MinGW\\include", "-LC:\\MinGW\\lib", "-lallegro-4.4.2-mt", "‐o", "$file_base_name"], 
+  "selector": ["source.c++"], 
+  "shell": true
+}
