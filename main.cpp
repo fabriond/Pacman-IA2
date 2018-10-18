@@ -1,4 +1,5 @@
 #include <allegro.h>
+#include <winalleg.h>
 #include <bits/stdc++.h>
 //#include <time.h>
 //#include <stdio.h>
@@ -753,8 +754,11 @@ void retirarTrilho(Comida * comida, int x, int y, int * score,int * score_atual)
     }
 }
 void verificarMorreu(Fantasma * fantasma,int x,int y, int *perdeu){
-    if((fantasma->x >= x-15 && fantasma->x <= x+15) && (fantasma->y >= y-15 && fantasma->y <= y+15))
+    if((fantasma->x >= x-15 && fantasma->x <= x+15) && (fantasma->y >= y-15 && fantasma->y <= y+15)){
         *perdeu=1;
+        vector<pair<Fantasma, int>> ().swap(fantasmaSkill);
+        vector<int> ().swap(timeSkill);
+    }
 }
 Fantasma moveFantasma(Fantasma fantasma){
     int v = 0;
@@ -827,7 +831,7 @@ bool comp_fitness_skill(Fantasma fantasma1, Fantasma fantasma2){
 
 void doSkill(Fantasma fantasma, int pos){
 	cout << "Tome skill!" << endl;
-
+  cout << fantasmaSkill.size() << endl;
 	Fantasma aux = fantasma;
 	/*aux.direcao = fantasma.direcao_anterior;
 	aux.direcao_anterior = fantasma.direcao;*/
@@ -858,14 +862,14 @@ Fantasma new_pop(Fantasma fantasma, int pos){
     }*/
 
     if(atual or fitness(fantasma) >= 200){
-        if(rand()%10 > 5 and fantasmaSkill.size() < 2) doSkill(cromossomos[1], pos);
+        if(rand()%10 > 5 and fantasmaSkill.size() < 2 && cromossomos.size() > 1) doSkill(cromossomos.at(1), pos);
         fantasma.direcao = cromossomos.front().direcao;
         fantasma.sprite_atual = cromossomos.front().sprite_atual;
         //cout << cromossomos.front().x << " " << cromossomos.front().y << endl;
         return fantasma;
     } else {
         //cout << "q merda: " << fitness(fantasma) << endl;
-        if(rand()%10 > 5 and fantasmaSkill.size() < 2) doSkill(cromossomos[cromossomos.size()-2], pos);
+        if(rand()%10 > 5 and fantasmaSkill.size() < 2 && cromossomos.size() > 1) doSkill(cromossomos.at(cromossomos.size()-2), pos);
         return cromossomos.back();
     }
 }
@@ -1027,8 +1031,9 @@ void setarDificuldade(int dificuldade,int * velocidade,int * velocidade_fantasma
 
 END_OF_FUNCTION(fecha_programa);
 
-int main ()
-{
+int main () {
+
+    //ShowWindow(GetConsoleWindow(), SW_HIDE);
     allegro_init(); //Vai inicializar umas coisas basicas da biblioteca
     install_timer(); //Instalar os timers padrão, funcionar o mouse e tocar audio etc
     install_keyboard(); //Para instalar o teclado,tambem pode instalar mouse etc
