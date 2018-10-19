@@ -755,11 +755,8 @@ void retirarTrilho(Comida * comida, int x, int y, int * score,int * score_atual)
     }
 }
 void verificarMorreu(Fantasma * fantasma,int x,int y, int *perdeu){
-    if((fantasma->x >= x-15 && fantasma->x <= x+15) && (fantasma->y >= y-15 && fantasma->y <= y+15)){
+    if((fantasma->x >= x-15 && fantasma->x <= x+15) && (fantasma->y >= y-15 && fantasma->y <= y+15))
         *perdeu=1;
-        vector<pair<Fantasma, int>> ().swap(fantasmaSkill);
-        vector<int> ().swap(timeSkill);
-    }
 }
 Fantasma moveFantasma(Fantasma fantasma){
     int v = 0;
@@ -948,8 +945,9 @@ Fantasma genetic_algorithmSkill(Fantasma fantasma, int pos){
 }
 
 void setarFantasmas(Fantasma * fantasmas, int quantidade){
-	timeSkill.clear();
-	fantasmaSkill.clear();
+    vector<pair<Fantasma, int>> ().swap(fantasmaSkill);
+    vector<int> ().swap(timeSkill);
+
     int i;
     for (i=0;i<quantidade;i++){
         if(i%4==0){
@@ -1031,7 +1029,7 @@ END_OF_FUNCTION(fecha_programa);
 
 int main () {
 
-    //ShowWindow(GetConsoleWindow(), SW_HIDE);
+    //ShowWindow(GetConsoleWindow(), SW_HIDE); //Esconde o console
     allegro_init(); //Vai inicializar umas coisas basicas da biblioteca
     install_timer(); //Instalar os timers padrÃ£o, funcionar o mouse e tocar audio etc
     install_keyboard(); //Para instalar o teclado,tambem pode instalar mouse etc

@@ -8,7 +8,9 @@ W,S,A,D: para movimentar o personagem. (Segure a direção).<br/>
 ESC: fechar o programa. <br/>
 
 ## Compilar
-Para compilar é necessário ter a biblioteca Allegro 4.4.2 instalada, e configurar o CodeBlocks para ultilizar-la. 
+Para compilar é necessário ter a biblioteca Allegro 4.4.2 instalada (na pasta raiz do MinGW), e utilizar o sublime-build fornecido no projeto para compilar o programa utilizando o Sublime Text 2 ou 3.
+
+Obs: o caminho para a pasta do MinGW deve ser alterado no sublime-build, caso seja diferente do caminho que é usado nele (C:\\MinGW)
 
 ## Componentes
 Tiago Marinho e Gabriel Fabrício
