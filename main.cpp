@@ -7,7 +7,7 @@
 #define MAX_X 555
 #define MAX_Y 515
 #define MIN_XY 15
-//#define VELOCIDADE 10 //quanto menor, mais rápido
+//#define VELOCIDADE 10 //quanto menor, mais rÃ¡pido
 //#define VELOCIDADE_FANTASMA 7
 #define VELOCIDADE_SPRITE 100
 //#define ATT_QUADRANTE 1000
@@ -47,8 +47,9 @@ vector<pair<Fantasma, int>> fantasmaSkill;
 vector<int> timeSkill;
 int skill = 0;
 int posGlobal;
+const int qtSkill = 2;
 
-volatile int exit_programa = FALSE; //Tambem pode ser while(!exit_program) ali no while, ao invés de !key[KEY_ESC]
+volatile int exit_programa = FALSE; //Tambem pode ser while(!exit_program) ali no while, ao invÃ©s de !key[KEY_ESC]
 void fecha_programa() {exit_programa=TRUE;}
 int trilho(int x,int y){
     //y = -y;
@@ -799,7 +800,7 @@ Fantasma moveFantasma(Fantasma fantasma){
 int trilho(Fantasma fantasma){
     return trilho(fantasma.x, fantasma.y);
 }
-//função de aptidão
+//funÃ§Ã£o de aptidÃ£o
 double fitness(Fantasma fantasma){
     double x1 = fantasma.x;
     double y1 = fantasma.y;
@@ -807,7 +808,7 @@ double fitness(Fantasma fantasma){
     double x2 = fantasma.xp;
     double y2 = fantasma.yp;
 
-    // Distância euclideana do fantasma ao pacman
+    // DistÃ¢ncia euclideana do fantasma ao pacman
     return sqrt((x2-x1) * (x2-x1) + (y2-y1) * (y2-y1));
 }
 
@@ -830,15 +831,9 @@ bool comp_fitness_skill(Fantasma fantasma1, Fantasma fantasma2){
 }
 
 void doSkill(Fantasma fantasma, int pos){
-	cout << "Tome skill!" << endl;
-  cout << fantasmaSkill.size() << endl;
+	// cout << "Tome skill!" << endl;
+  // cout << fantasmaSkill.size() << endl;
 	Fantasma aux = fantasma;
-	/*aux.direcao = fantasma.direcao_anterior;
-	aux.direcao_anterior = fantasma.direcao;*/
-	// if(fantasma.direcao == ESQUERDA) aux.direcao = DIREITA;
-	// else if(fantasma.direcao == CIMA) aux.direcao = BAIXO;
-	// else if(fantasma.direcao == BAIXO) aux.direcao = CIMA;
-	// else aux.direcao = ESQUERDA;
 
 	moveFantasma(aux);
 
@@ -846,14 +841,14 @@ void doSkill(Fantasma fantasma, int pos){
 	timeSkill.push_back(clock());
 }
 
-//geração da nova população
+//geraÃ§Ã£o da nova populaÃ§Ã£o
 Fantasma new_pop(Fantasma fantasma, int pos){
     srand(rand()+fantasma.xp * fantasma.direcao - fantasma.x + fantasma.y/max((int)cromossomos.size(), 1));
     //cout << fitness(fantasma) << endl;
-    //ordena os cromossomos pela aptidão
+    //ordena os cromossomos pela aptidÃ£o
     sort(cromossomos.begin(), cromossomos.end(), comp_fitness);
 
-    //90% de chance de escolher o melhor caso, se a distância do fantasma ao pacman for menor que 260
+    //90% de chance de escolher o melhor caso, se a distÃ¢ncia do fantasma ao pacman for menor que 260
     //caso esteja a uma distancia de 260 ou mais do pacman, escolhe o melhor caso sempre
     int atual = rand()%10;
 
@@ -862,14 +857,14 @@ Fantasma new_pop(Fantasma fantasma, int pos){
     }*/
 
     if(atual or fitness(fantasma) >= 200){
-        if(rand()%10 > 5 and fantasmaSkill.size() < 2 && cromossomos.size() > 1) doSkill(cromossomos.at(1), pos);
-        fantasma.direcao = cromossomos.front().direcao;
-        fantasma.sprite_atual = cromossomos.front().sprite_atual;
+        if(rand()%10 > 5 and fantasmaSkill.size() < qtSkill && cromossomos.size() > 1) doSkill(cromossomos.at(1), pos);
+        // fantasma.direcao = cromossomos.front().direcao;
+        // fantasma.sprite_atual = cromossomos.front().sprite_atual;
         //cout << cromossomos.front().x << " " << cromossomos.front().y << endl;
-        return fantasma;
+        return cromossomos.front();
     } else {
         //cout << "q merda: " << fitness(fantasma) << endl;
-        if(rand()%10 > 5 and fantasmaSkill.size() < 2 && cromossomos.size() > 1) doSkill(cromossomos.at(cromossomos.size()-2), pos);
+        if(rand()%10 > 5 and fantasmaSkill.size() < qtSkill && cromossomos.size() > 1) doSkill(cromossomos.at(cromossomos.size()-2), pos);
         return cromossomos.back();
     }
 }
@@ -881,9 +876,10 @@ Fantasma new_popSkill(Fantasma fantasma, int pos){
 
     int atual = rand()%4;
     if(atual or fitness(fantasmas[pos]) <= 260){
-    	fantasma.direcao = cromossomosSkill.front().direcao;
-    	fantasma.sprite_atual = cromossomosSkill.front().sprite_atual;
-    	return fantasma;
+    	// fantasma.direcao = cromossomosSkill.front().direcao;
+    	// fantasma.sprite_atual = cromossomosSkill.front().sprite_atual;
+    	// return fantasma;
+    	return cromossomosSkill.front();
     } else {
     	return cromossomosSkill.back();
     }
@@ -897,7 +893,7 @@ bool backwards(int direcao1, int direcao2){
     if(direcao1 == DIREITA) return direcao2 == ESQUERDA;
     else return false;
 }
-//mutação
+//mutaÃ§Ã£o
 void mutate(Fantasma fantasma, int type){
     Fantasma aux[4] = {fantasma,fantasma,fantasma,fantasma};
     aux[0].x++;
@@ -930,7 +926,7 @@ void mutate(Fantasma fantasma, int type){
     //cout << cromossomos.size() << endl;
 }
 
-//roda o algoritmo genético, caso aplicável
+//roda o algoritmo genÃ©tico, caso aplicÃ¡vel
 Fantasma genetic_algorithm(Fantasma fantasma, int pos){
     cromossomos.clear();
     mutate(fantasma, 0);
@@ -952,6 +948,8 @@ Fantasma genetic_algorithmSkill(Fantasma fantasma, int pos){
 }
 
 void setarFantasmas(Fantasma * fantasmas, int quantidade){
+	timeSkill.clear();
+	fantasmaSkill.clear();
     int i;
     for (i=0;i<quantidade;i++){
         if(i%4==0){
@@ -1035,10 +1033,10 @@ int main () {
 
     //ShowWindow(GetConsoleWindow(), SW_HIDE);
     allegro_init(); //Vai inicializar umas coisas basicas da biblioteca
-    install_timer(); //Instalar os timers padrão, funcionar o mouse e tocar audio etc
+    install_timer(); //Instalar os timers padrÃ£o, funcionar o mouse e tocar audio etc
     install_keyboard(); //Para instalar o teclado,tambem pode instalar mouse etc
-    set_color_depth(32); //Parametros são a quantidade de cores, 32 bits,16 bits etc
-    set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,555,0,0); //Autodetect detecta o driver de vídeo, é o recomendado, windowed e fullsc
+    set_color_depth(32); //Parametros sÃ£o a quantidade de cores, 32 bits,16 bits etc
+    set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,555,0,0); //Autodetect detecta o driver de vÃ­deo, Ã© o recomendado, windowed e fullsc
     set_window_title("PACMAN"); //Titulo da janela do programa
 
     exit_programa=FALSE;
@@ -1102,7 +1100,7 @@ int main () {
             direcao_atual=DIREITA;
             int PERDEU=0;
             int score_atual=0;
-            while (!exit_programa && !PERDEU) //Condição para fechar o programa, array Key[estado da tecla]
+            while (!exit_programa && !PERDEU) //CondiÃ§Ã£o para fechar o programa, array Key[estado da tecla]
             {
                 int j;
 
@@ -1161,7 +1159,7 @@ int main () {
                         tempo_fantasma +=VELOCIDADE_FANTASMA;
                         for (j=0;j<quantidade_fantasmas;j++){ // movimenta os fantasmas
                             //int v=0;
-                            //atualiza posição do pacman nos fantasmas
+                            //atualiza posiÃ§Ã£o do pacman nos fantasmas
                             fantasmas[j].xp = pos_x;
                             fantasmas[j].yp = pos_y;
                             //movimenta o fantasma
@@ -1175,7 +1173,7 @@ int main () {
                     }
 
                     if(tempo >= tempo_fantasmaSkill){
-                    	tempo_fantasmaSkill += VELOCIDADE_FANTASMA + 5;
+                    	tempo_fantasmaSkill += VELOCIDADE_FANTASMA - 3;
                         for(int j=0;j<fantasmaSkill.size();j++){
                         	fantasmaSkill[j].first.xp = pos_x;
                         	fantasmaSkill[j].first.yp = pos_y;
@@ -1208,10 +1206,10 @@ int main () {
 
                 //UPDATE
                 //Atualiza o estado do jogo
-                //pos_x++; //Variar a posição do circulo ao longo do tempo
+                //pos_x++; //Variar a posiÃ§Ã£o do circulo ao longo do tempo
 
                 //DRAW
-                //Parte de desenho - Ponteiro para BITMAP que é o "screen", tudo que vc desenhar, aparece na tela
+                //Parte de desenho - Ponteiro para BITMAP que Ã© o "screen", tudo que vc desenhar, aparece na tela
 
                 draw_sprite(buffer,mapa,0,0);
 
@@ -1232,7 +1230,7 @@ int main () {
                 // 	cout << endl;
 
                 if(timeSkill.size() > 0){
-                	if(tempo - timeSkill[0] >= 5000) timeSkill.pop_back(), fantasmaSkill.pop_back();
+                	if(tempo - timeSkill.back() >= 5000) timeSkill.pop_back(), fantasmaSkill.pop_back();
                 }
 
                 for(int j=0;j<fantasmaSkill.size();j++){
@@ -1258,6 +1256,8 @@ int main () {
                     pos_y = MAX_Y;
                     score_atual = 0;
                     direcao_atual=DIREITA;
+                    // cromossomosSkill.clear();
+                    // tempo_fantasmaSkill.clear();
                 }
 
                 if(PERDEU==1){
@@ -1318,7 +1318,7 @@ int main () {
 
 
 
-    //FINALIZAÇÃO
+    //FINALIZAÃ‡ÃƒO
     destroy_bitmap(buffer);
     destroy_bitmap(sprite_atual);
     destroy_bitmap(mapa);
@@ -1327,4 +1327,4 @@ int main () {
 
     return 0;
 }
-END_OF_MAIN() //Tem que botar por questões de compatiblidade
+END_OF_MAIN() //Tem que botar por questÃµes de compatiblidade
